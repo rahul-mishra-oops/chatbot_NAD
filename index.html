@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech</title>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=PFEnVyjr"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h2>Text to Speech App</h2>
+<textarea id="textInput" placeholder="Enter text here..."></textarea>
+<br>
+<button onclick="startReading()">Start</button>
+<button onclick="pauseReading()">Pause</button>
+<button onclick="stopReading()">Stop</button>
+
+<script>
+    let isPaused = false;
+    let isStopped = false;
+
+    function startReading() {
+        if (isPaused) {
+            responsiveVoice.resume();
+            isPaused = false;
+        } else {
+            let text = document.getElementById("textInput").value;
+            isStopped = false;
+            responsiveVoice.speak(text, "UK English Male", {
+                onstart: () => {
+                    isPaused = false;
+                    isStopped = false;
+                },
+                onend: () => {
+                    isPaused = false;
+                    isStopped = true;
+                }
+            });
+        }
+    }
+
+    function pauseReading() {
+        if (!isStopped) {
+            responsiveVoice.pause();
+            isPaused = true;
+        }
+    }
+
+    function stopReading() {
+        responsiveVoice.cancel();
+        isPaused = false;
+        isStopped = true;
+    }
+</script>
+</body>
+</html>
